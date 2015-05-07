@@ -49,10 +49,10 @@ class DeliveryPerson
     self.deliveries_made = deliveries
     self.bonus = bonus
   end
-end
 
-def bonus money
-  money * 0.1
+  def calculate_bonus money
+    self.bonus = bonus + (money * 0.1)
+  end
 end
 
 delivery_people = [
@@ -76,16 +76,16 @@ puts "Total money made this week: #{money_made_in_week}."
 deliveries.each do |delivery|
   if delivery.destination == 'earth'
     fry.deliveries_made = fry.deliveries_made + 1
-    fry.bonus = fry.bonus + bonus(delivery.money_made)
+    fry.bonus = fry.calculate_bonus delivery.money_made
   elsif delivery.destination == 'mars'
     amy.deliveries_made = amy.deliveries_made + 1
-    amy.bonus = amy.bonus + bonus(delivery.money_made)
+    amy.bonus = amy.calculate_bonus delivery.money_made
   elsif delivery.destination == 'uranus'
     bender.deliveries_made = bender.deliveries_made + 1
-    bender.bonus = bender.bonus + bonus(delivery.money_made)
+    bender.bonus = bender.calculate_bonus delivery.money_made
   else
     leela.deliveries_made = leela.deliveries_made + 1
-    leela.bonus = leela.bonus + bonus(delivery.money_made)
+    leela.bonus = leela.calculate_bonus delivery.money_made
   end
 end
 
