@@ -35,13 +35,32 @@ class Delivery
 
   def initialize hash
     self.destination = hash['Destination']
-    self.shipment_item = hash['What got shipped']
-    self.number_of_crates = hash['Number of crates']
-    self.money_made = hash['Money we made']
+    self.shipment_item = hash[' What got shipped']
+    self.number_of_crates = hash[' Number of crates']
+    self.money_made = hash[' Money we made']
   end
 end
 
+# class DeliveryPerson
+#   attr_accessor :deliveries_made, :bonus
+#
+#   def initialize delivery
+#     self.deliveries_made = hash[]
+#     self.bonus = hash[]
+#   end
+# end
 
+#lstrip!
+deliveries = []
+CSV.foreach("./planet_express_logs.csv", headers: true) do |row|
+  deliveries << Delivery.new(row.to_hash)
+end
+
+money_made_in_week = deliveries.map do |delivery|
+  delivery.money_made.to_f
+end.reduce(:+)
+puts "Money made this week: "
+puts money_made_in_week
 
 # ## Hard Mode
 #
