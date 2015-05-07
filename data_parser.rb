@@ -28,32 +28,9 @@
 # * They get a bonus of 10% of the money for the shipment as the bonus
 # * How much of a bonus did each employee get?
 
-require 'csv'
-
-class Delivery
-  attr_accessor :destination, :shipment_item, :number_of_crates, :money_made
-
-  def initialize hash
-    self.destination = hash['Destination'].downcase
-    self.shipment_item = hash[' What got shipped'].downcase
-    self.number_of_crates = hash[' Number of crates'].to_f
-    self.money_made = hash[' Money we made'].to_f
-  end
-end
-
-class DeliveryPerson
-  attr_accessor :name, :deliveries_made, :bonus
-
-  def initialize (name, deliveries = 0, bonus = 0)
-    self.name = name
-    self.deliveries_made = deliveries
-    self.bonus = bonus
-  end
-
-  def calculate_bonus money
-    self.bonus = bonus + (money * 0.1)
-  end
-end
+require_relative 'planet_express_delivery'
+require_relative 'planet_express_delivery_person'
+require_relative 'planet_express_data_parser'
 
 delivery_people = [
   fry = DeliveryPerson.new('Fry'),
@@ -62,7 +39,6 @@ delivery_people = [
   leela = DeliveryPerson.new('Leela')
 ]
 
-#lstrip!
 deliveries = []
 CSV.foreach("./planet_express_logs.csv", headers: true) do |row|
   deliveries << Delivery.new(row.to_hash)
@@ -99,7 +75,10 @@ end
 #   and outputs the information to the console
 # * How much money did we make broken down by planet? ie.. how much did we make shipping to Earth? Mars? Saturn? etc.
 #
-#
+
+planet_express = Parse.new
+planet_express.parse_data("planet_express_logs.csv")
+
 # ## Nightmare Mode
 #
 # * No methods can be longer than 10 lines long
