@@ -34,21 +34,33 @@ class Delivery
   attr_accessor :destination, :shipment_item, :number_of_crates, :money_made
 
   def initialize hash
-    self.destination = hash['Destination']
-    self.shipment_item = hash[' What got shipped']
-    self.number_of_crates = hash[' Number of crates']
-    self.money_made = hash[' Money we made']
+    self.destination = hash['Destination'].downcase
+    self.shipment_item = hash[' What got shipped'].downcase
+    self.number_of_crates = hash[' Number of crates'].to_f
+    self.money_made = hash[' Money we made'].to_f
   end
 end
 
-# class DeliveryPerson
-#   attr_accessor :deliveries_made, :bonus
-#
-#   def initialize delivery
-#     self.deliveries_made = hash[]
-#     self.bonus = hash[]
-#   end
-# end
+class DeliveryPerson
+  attr_accessor :name, :deliveries_made, :bonus
+
+  def initialize (name, deliveries = 0, bonus = 0)
+    self.name = name
+    self.deliveries_made = deliveries
+    self.bonus = bonus
+  end
+end
+
+def bonus money
+  money * 0.1
+end
+
+delivery_people = [
+  fry = DeliveryPerson.new('Fry'),
+  amy = DeliveryPerson.new('Amy'),
+  bender = DeliveryPerson.new('Bender'),
+  leela = DeliveryPerson.new('Leela')
+]
 
 #lstrip!
 deliveries = []
@@ -57,10 +69,29 @@ CSV.foreach("./planet_express_logs.csv", headers: true) do |row|
 end
 
 money_made_in_week = deliveries.map do |delivery|
-  delivery.money_made.to_f
+  delivery.money_made
 end.reduce(:+)
-puts "Money made this week: "
-puts money_made_in_week
+puts "Total money made this week: #{money_made_in_week}."
+
+deliveries.each do |delivery|
+  if delivery.destination == 'earth'
+    fry.deliveries_made = fry.deliveries_made + 1
+    fry.bonus = fry.bonus + bonus(delivery.money_made)
+  elsif delivery.destination == 'mars'
+    amy.deliveries_made = amy.deliveries_made + 1
+    amy.bonus = amy.bonus + bonus(delivery.money_made)
+  elsif delivery.destination == 'uranus'
+    bender.deliveries_made = bender.deliveries_made + 1
+    bender.bonus = bender.bonus + bonus(delivery.money_made)
+  else
+    leela.deliveries_made = leela.deliveries_made + 1
+    leela.bonus = leela.bonus + bonus(delivery.money_made)
+  end
+end
+
+delivery_people.each do |delivery_person|
+  puts "#{delivery_person.name} made #{delivery_person.deliveries_made} deliveries this week and made #{delivery_person.bonus} in bonus."
+end
 
 # ## Hard Mode
 #
