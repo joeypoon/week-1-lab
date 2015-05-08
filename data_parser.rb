@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 # ### Deliverables
 #
 # * A repo containing at least:
@@ -28,9 +30,14 @@
 # * They get a bonus of 10% of the money for the shipment as the bonus
 # * How much of a bonus did each employee get?
 
-require_relative 'planet_express_delivery'
-require_relative 'planet_express_delivery_person'
-require_relative 'planet_express_data_parser'
+require './planet_express_delivery'
+require './planet_express_delivery_person'
+require './planet_express_data_parser'
+
+if ARGV.empty?
+  puts "Please enter csv to be parsed as a parameter."
+  exit
+end
 
 delivery_people = [
   fry = DeliveryPerson.new('Fry'),
@@ -40,7 +47,7 @@ delivery_people = [
 ]
 
 deliveries = []
-CSV.foreach("./planet_express_logs.csv", headers: true) do |line|
+CSV.foreach("./#{ARGV[0]}", headers: true) do |line|
   deliveries << Delivery.new(line.to_hash)
 end
 
@@ -73,7 +80,7 @@ end
 #
 #
 planet_express = Parse.new
-planet_express.parse_data("planet_express_logs.csv")
+planet_express.parse_data("#{ARGV[0]}")
 
 # ## Nightmare Mode
 #
