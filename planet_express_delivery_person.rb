@@ -7,7 +7,18 @@ class DeliveryPerson
     self.bonus = bonus
   end
 
-  def calculate_bonus money
-    self.bonus = bonus + (money * 0.1)
+  def calculate_deliveries_bonus money
+    made_delivery
+    calculate_bonus money
   end
+
+  private
+
+    def made_delivery
+      self.deliveries_made = deliveries_made + 1
+    end
+
+    def calculate_bonus money
+      self.bonus = bonus + (money * 0.1)
+    end
 end

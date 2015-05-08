@@ -9,38 +9,32 @@ class Parse
   require_relative 'planet_express_delivery'
   require 'csv'
 
-  attr_accessor :planet
+  attr_accessor :planet, :planets
+
+  def initialize
+    destinations = 'earth, mars, moon, uranus, jupiter, pluto, saturn, mercury'.split(', ')
+    self.planets = destinations.map do |planet|
+      {planet: planet, revenue: 0}
+    end
+  end
 
   def parse_data file_name
-    destinations = 'earth, mars, moon, uranus, jupiter, pluto, saturn, mercury'.split(', ')
-
-    planets = []
-    destinations.each do |planet|
-      planets << {planet: planet, revenue: 0}
-    end
-
     CSV.foreach("./#{file_name}", headers: true) do |line|
-      planets.each do |planet|
+      self.planets.each do |planet|
         if line.to_hash['Destination'].downcase == planet[:planet]
           planet[:revenue] = planet[:revenue] + line.to_hash[' Money we made'].to_f
         end
       end
     end
-
-    planets.each do |planet|
-      puts "We made #{planet[:revenue]} from #{planet[:planet].capitalize} this week."
-    end
-    # planets = deliveries.map do |delivery|
-    #   {planet: delivery.destination, revenue: delivery.money_made}
-    # end
-    #
-    # planets.each do |planet|
-    #   earth = {}
-    # end
+    revenue_by_planet self.planets
   end
 
+  private
+
+    def revenue_by_planet planets
+      planets.each do |planet|
+        puts "We made #{planet[:revenue]} from #{planet[:planet].capitalize} this week."
+      end
+    end
+
 end
-
-
-
-#hash.merge(hash2 { |key, old_val, new_val| new_val + old_val })

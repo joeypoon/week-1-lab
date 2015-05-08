@@ -51,17 +51,13 @@ puts "Total money made this week: #{money_made_in_week}."
 
 deliveries.each do |delivery|
   if delivery.destination == 'earth'
-    fry.deliveries_made = fry.deliveries_made + 1
-    fry.bonus = fry.calculate_bonus delivery.money_made
+    fry.calculate_deliveries_bonus delivery.money_made
   elsif delivery.destination == 'mars'
-    amy.deliveries_made = amy.deliveries_made + 1
-    amy.bonus = amy.calculate_bonus delivery.money_made
+    amy.calculate_deliveries_bonus delivery.money_made
   elsif delivery.destination == 'uranus'
-    bender.deliveries_made = bender.deliveries_made + 1
-    bender.bonus = bender.calculate_bonus delivery.money_made
+    bender.calculate_deliveries_bonus delivery.money_made
   else
-    leela.deliveries_made = leela.deliveries_made + 1
-    leela.bonus = leela.calculate_bonus delivery.money_made
+    leela.calculate_deliveries_bonus delivery.money_made
   end
 end
 
