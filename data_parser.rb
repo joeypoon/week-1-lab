@@ -34,53 +34,58 @@ require './planet_express_delivery'
 require './planet_express_delivery_person'
 require './planet_express_data_parser'
 
-if ARGV.empty?
-  puts "Please enter csv to be parsed as a parameter."
-  exit
-end
+if "./data_parser.rb" == $0
 
-delivery_people = [
-  fry = DeliveryPerson.new('Fry'),
-  amy = DeliveryPerson.new('Amy'),
-  bender = DeliveryPerson.new('Bender'),
-  leela = DeliveryPerson.new('Leela')
-]
-
-deliveries = []
-CSV.foreach("./#{ARGV[0]}", headers: true) do |line|
-  deliveries << Delivery.new(line.to_hash)
-end
-
-money_made_in_week = deliveries.map do |delivery|
-  delivery.money_made
-end.reduce(:+)
-puts "Total money made this week: #{money_made_in_week}."
-
-deliveries.each do |delivery|
-  if delivery.destination == 'earth'
-    fry.calculate_deliveries_bonus delivery.money_made
-  elsif delivery.destination == 'mars'
-    amy.calculate_deliveries_bonus delivery.money_made
-  elsif delivery.destination == 'uranus'
-    bender.calculate_deliveries_bonus delivery.money_made
-  else
-    leela.calculate_deliveries_bonus delivery.money_made
+  if ARGV.empty?
+    puts "Please enter csv to be parsed as a parameter."
+    exit
   end
-end
 
-delivery_people.each do |delivery_person|
-  puts "#{delivery_person.name} made #{delivery_person.deliveries_made} deliveries this week and made #{delivery_person.bonus} in bonus."
-end
+  delivery_people = [
+    fry = DeliveryPerson.new('Fry'),
+    amy = DeliveryPerson.new('Amy'),
+    bender = DeliveryPerson.new('Bender'),
+    leela = DeliveryPerson.new('Leela')
+  ]
 
-# ## Hard Mode
-#
-# * Define a class "Parse", with a method `parse_data`, with an argument `file_name`
-#   and outputs the information to the console
-# * How much money did we make broken down by planet? ie.. how much did we make shipping to Earth? Mars? Saturn? etc.
-#
-#
-planet_express = Parse.new
-planet_express.parse_data("#{ARGV[0]}")
+  deliveries = []
+  CSV.foreach("./#{ARGV[0]}", headers: true) do |line|
+    deliveries << Delivery.new(line.to_hash)
+  end
+
+  money_made_in_week = deliveries.map do |delivery|
+    delivery.money_made
+  end.reduce(:+)
+  puts "Total money made this week: #{money_made_in_week}."
+
+  deliveries.each do |delivery|
+    if delivery.destination == 'earth'
+      fry.calculate_deliveries_bonus delivery.money_made
+    elsif delivery.destination == 'mars'
+      amy.calculate_deliveries_bonus delivery.money_made
+    elsif delivery.destination == 'uranus'
+      bender.calculate_deliveries_bonus delivery.money_made
+    else
+      leela.calculate_deliveries_bonus delivery.money_made
+    end
+  end
+
+  delivery_people.each do |delivery_person|
+    puts "#{delivery_person.name} made #{delivery_person.deliveries_made} deliveries this week and made #{delivery_person.bonus} in bonus."
+  end
+
+  # ## Hard Mode
+  #
+  # * Define a class "Parse", with a method `parse_data`, with an argument `file_name`
+  #   and outputs the information to the console
+  # * How much money did we make broken down by planet? ie.. how much did we make shipping to Earth? Mars? Saturn? etc.
+  #
+  #
+
+  planet_express = Parse.new
+  planet_express.parse_data("#{ARGV[0]}")
+  
+end
 
 # ## Nightmare Mode
 #
