@@ -40,8 +40,8 @@ delivery_people = [
 ]
 
 deliveries = []
-CSV.foreach("./planet_express_logs.csv", headers: true) do |row|
-  deliveries << Delivery.new(row.to_hash)
+CSV.foreach("./planet_express_logs.csv", headers: true) do |line|
+  deliveries << Delivery.new(line.to_hash)
 end
 
 money_made_in_week = deliveries.map do |delivery|
@@ -75,7 +75,7 @@ end
 #   and outputs the information to the console
 # * How much money did we make broken down by planet? ie.. how much did we make shipping to Earth? Mars? Saturn? etc.
 #
-
+#
 planet_express = Parse.new
 planet_express.parse_data("planet_express_logs.csv")
 
@@ -96,8 +96,8 @@ planet_express.parse_data("planet_express_logs.csv")
 #
 # ```ruby
 # require 'csv'
-# CSV.foreach("planet_express_logs.csv", headers: true) do |row|
-#   puts row.inspect # replace with your logic
+# CSV.foreach("planet_express_logs.csv", headers: true) do |line|
+#   puts line.inspect # replace with your logic
 # end
 # ```
 #
