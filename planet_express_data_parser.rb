@@ -6,7 +6,7 @@
 #
 
 class Parse
-  require_relative 'planet_express_delivery'
+  require './planet_express_delivery'
   require 'csv'
 
   attr_accessor :planet, :planets
@@ -17,7 +17,7 @@ class Parse
       {planet: planet, revenue: 0}
     end
   end
-
+  
   def parse_data file_name
     CSV.foreach("./#{file_name}", headers: true) do |line|
       self.planets.each do |planet|

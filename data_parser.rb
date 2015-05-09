@@ -34,7 +34,15 @@ require './planet_express_delivery'
 require './planet_express_delivery_person'
 require './planet_express_data_parser'
 
-if "./data_parser.rb" == $0
+# class Planet
+#   attr_accessor :name, :deliveries_to, :money_earned
+#
+#   def initialize name
+#     self.name = name
+#   end
+# end
+
+if File.identical?("./data_parser.rb", $0)
 
   if ARGV.empty?
     puts "Please enter csv to be parsed as a parameter."
@@ -84,7 +92,7 @@ if "./data_parser.rb" == $0
 
   planet_express = Parse.new
   planet_express.parse_data("#{ARGV[0]}")
-  
+
 end
 
 # ## Nightmare Mode
