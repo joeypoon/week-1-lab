@@ -1,15 +1,14 @@
 class DeliveryPerson
-  attr_accessor :name, :deliveries_made, :bonus
+  attr_accessor :name, :deliveries, :bonus
 
   def initialize name
-    self.name = name.downcase
-    self.deliveries_made = 0
+    self.name = name.downcase.capitalize
+    self.deliveries = 0
     self.bonus = 0
   end
 
-  def calculate_deliveries_bonus planet
+  def add_bonus revenue
     bonus_percent = 0.10
-    self.deliveries_made = deliveries_made + planet.deliveries
-    self.bonus = bonus + (planet.revenue * bonus_percent)
+    self.bonus = (bonus + (revenue * bonus_percent)).to_i
   end
 end
